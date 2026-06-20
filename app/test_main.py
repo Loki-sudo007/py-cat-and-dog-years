@@ -14,7 +14,6 @@ class TestAgeClass:
             pytest.param(24, 24, [2, 2], id="second year"),
             pytest.param(28, 24, [3, 2], id="different cat and dog age"),
             pytest.param(120, 130, [26, 23], id="big age"),
-            pytest.param(-1, -1, [0, 0], id="negative ages"),
             pytest.param(27, 27, [2, 2], id="before cat third year"),
             pytest.param(28, 28, [3, 2], id="cat third year"),
             pytest.param(29, 29, [3, 3], id="dog third year"),
@@ -41,4 +40,18 @@ class TestAgeClass:
         self, cat_age: int, dog_age: int
     ) -> None:
         with pytest.raises(TypeError):
+            get_human_age(cat_age, dog_age)
+
+    @pytest.mark.parametrize(
+        "cat_age, dog_age",
+        [
+            pytest.param(-1, 0, id="cat age is negative"),
+            pytest.param(0, -1, id="dog age is negative"),
+            pytest.param(-1, -1, id="both ages are negative"),
+        ],
+    )
+    def test_get_human_age_raises_value_error_for_negative_ages(
+            self, cat_age: int, dog_age: int
+    ) -> None:
+        with pytest.raises(ValueError):
             get_human_age(cat_age, dog_age)
